@@ -1,13 +1,18 @@
+from __future__ import annotations
+
 from discord.app_commands import CommandTree
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ...modubot import Bot
 
 class Module:
     name = "slash_commands"
 
-    def __init__(self,bot):
-        self._cmds_synced = False
-
-        self.bot = bot
-        self.cmd_tree = None
+    def __init__(self,bot: Bot):
+        self.bot: Bot = bot
+        self._cmds_synced: bool = False
+        self.cmd_tree: CommandTree[Bot]
     
     async def init(self):
         self.cmd_tree = CommandTree(self.bot)

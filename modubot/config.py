@@ -1,46 +1,48 @@
+from __future__ import annotations
+ 
+# pyright: reportUnknownVariableType=false
+# ^ the type of typeguard.check_type ironically can't be inferred :P
+
 import json
 import os
+from typeguard import check_type
+from typing import Any,Dict,Generator,Tuple
 
 class Config:
-    config_fields = {
-        "intents": dict,
-        "enabled_modules": list,
-        "token": str
-    }
+    def __init__(self,config_path: str) -> None:
+        self.path: str = config_path
+        self.exists: bool = os.path.exists(config_path)
 
-    def __init__(self,config_path):
-        self.exists = False
-        self.path = config_path
-
-        if config_path is not None:
-            self.exists = os.path.exists(config_path)
-            if self.exists:
-                with open(config_path) as f:
-                    self._load(json.load(f))
-            else:
-                self._load({x:y() for x,y in self.config_fields.items()})
-                self.config.save()
-                raise Exception(f"config does not exist, new one created at '{config_path}'")
+        if self.exists:
+            with open(config_path) as f:
+                self._load(json.load(f))
+        else:
+            self._load({})
+            self.save()
+            raise Exception(f"config does not exist, new one created at '{config_path}'")
     
-    def _load(self,data):
-        fixed = False
-        for attr,t in self.config_fields.items():
-            value = None
+    def _load(self,data: Dict[str,Any]) -> None:
+        needs_saving: bool = False
+        for attr,t in self.__annotations__.items():
+            value: type
             if not attr in data:
                 print(f"field '{attr}' missing from config, updating")
-                value = t()
-                fixed = True
+                if hasattr(t,"__origin__"):
+                    value = t.__origin__()
+                else:
+                    value = t()
+                needs_saving = True
             else:
                 value = data[attr]
-                assert type(value) == t, f"expected type {t.__name__} for field '{attr}' in config, got {type(value).__name__}"
+                check_type(f"Config.{attr}",value,t)
             setattr(self,attr,value)
-        if fixed:
+        if needs_saving:
             self.save()
     
-    def save(self):
+    def save(self) -> None:
         with open(self.path,"w+") as f:
             json.dump(dict(self),f,indent=4)
     
-    def __iter__(self):
-        for attr in self.config_fields.keys():
+    def __iter__(self) -> Generator[Tuple[str,Any],None,None]:
+        for attr in self.__annotations__.keys():
             yield attr, getattr(self,attr)
