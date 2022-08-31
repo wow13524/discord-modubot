@@ -36,8 +36,16 @@ class Config:
             self.save()
     
     def save(self) -> None:
+        existing: Dict[str,Any] = {}
+        if os.path.exists(self.path):
+            with open(self.path,"r+") as f:
+                content: str = f.read()
+                if content:
+                    existing = json.loads(content)
         with open(self.path,"w+") as f:
-            json.dump(dict(self),f,indent=4)
+            output: Dict[str,Any] = dict(self)
+            output.update(existing)
+            json.dump(output,f,indent=4)
     
     def __iter__(self) -> Generator[Tuple[str,Any],None,None]:
         for attr in self.types.keys():
