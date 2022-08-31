@@ -4,7 +4,7 @@ import asyncio
 from typing import Any,Awaitable,Callable,Dict,List,TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ...modubot import Bot
+    from modubot import Bot
 
 Callback = Callable[...,Awaitable[None]]
 

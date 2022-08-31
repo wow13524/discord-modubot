@@ -4,7 +4,7 @@ from discord.app_commands import CommandTree
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ...modubot import Bot
+    from modubot import Bot
 
 class Module:
     name = "slash_commands"

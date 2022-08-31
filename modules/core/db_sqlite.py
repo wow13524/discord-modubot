@@ -5,7 +5,7 @@ from os.path import join
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ...modubot import Bot
+    from modubot import Bot
 
 DEFAULT_DB_NAME = "data.db"
 

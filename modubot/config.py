@@ -6,7 +6,7 @@ from __future__ import annotations
 import json
 import os
 from typeguard import check_type
-from typing import Any,Dict,Generator,Tuple
+from typing import Any,Dict,Generator,Tuple,get_origin
 
 class Config:
     def __init__(self,config_path: str) -> None:
@@ -27,10 +27,7 @@ class Config:
             value: type
             if not attr in data:
                 print(f"field '{attr}' missing from config, updating")
-                if hasattr(t,"__origin__"):
-                    value = t.__origin__()
-                else:
-                    value = t()
+                value = (get_origin(t) or t)()
                 needs_saving = True
             else:
                 value = data[attr]
