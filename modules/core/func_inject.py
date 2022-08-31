@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import asyncio
 from typing import Any,Awaitable,Callable,Dict,List,TYPE_CHECKING
 
@@ -11,7 +9,7 @@ Callback = Callable[...,Awaitable[None]]
 class Module:
     name = "func_inject"
 
-    def __init__(self,bot: Bot):
+    def __init__(self,bot: 'Bot'):
         self.bot: Bot = bot
         self.groups: Dict[str,List[Callback]] = {}
 

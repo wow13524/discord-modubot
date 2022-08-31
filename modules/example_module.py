@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -8,7 +6,7 @@ if TYPE_CHECKING:
 class Module:
     name = "example_module"
 
-    def __init__(self,bot: Bot):
+    def __init__(self,bot: 'Bot'):
         self.bot = bot
         """
         Initialize any necessary instance variables for the module.

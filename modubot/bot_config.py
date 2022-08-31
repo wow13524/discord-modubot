@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from .config import Config
 from typing import Dict,List
 

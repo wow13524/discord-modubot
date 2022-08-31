@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from discord.app_commands import CommandTree
 from typing import TYPE_CHECKING
 
@@ -9,7 +7,7 @@ if TYPE_CHECKING:
 class Module:
     name = "slash_commands"
 
-    def __init__(self,bot: Bot):
+    def __init__(self,bot: 'Bot'):
         self.bot: Bot = bot
         self._cmds_synced: bool = False
         self.cmd_tree: CommandTree[Bot]

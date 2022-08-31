@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import aiosqlite
 from os.path import join
 from typing import TYPE_CHECKING
@@ -12,7 +10,7 @@ DEFAULT_DB_NAME = "data.db"
 class Module:
     name = "db_sqlite"
 
-    def __init__(self,bot: Bot):
+    def __init__(self,bot: 'Bot'):
         self.bot: Bot = bot
         self.db: aiosqlite.Connection
     

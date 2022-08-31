@@ -1,17 +1,16 @@
-from __future__ import annotations
- 
 # pyright: reportUnknownVariableType=false
 # ^ the type of typeguard.check_type ironically can't be inferred :P
 
 import json
 import os
 from typeguard import check_type
-from typing import Any,Dict,Generator,Tuple,get_origin
+from typing import Any,Dict,Generator,Tuple,get_origin,get_type_hints
 
 class Config:
     def __init__(self,config_path: str) -> None:
-        self.path: str = config_path
         self.exists: bool = os.path.exists(config_path)
+        self.path: str = config_path
+        self.types: Dict[str,Any] = get_type_hints(self)
 
         if self.exists:
             with open(config_path) as f:
@@ -23,8 +22,8 @@ class Config:
     
     def _load(self,data: Dict[str,Any]) -> None:
         needs_saving: bool = False
-        for attr,t in self.__annotations__.items():
-            value: type
+        for attr,t in self.types.items():
+            value: Any
             if not attr in data:
                 print(f"field '{attr}' missing from config, updating")
                 value = (get_origin(t) or t)()
@@ -41,5 +40,5 @@ class Config:
             json.dump(dict(self),f,indent=4)
     
     def __iter__(self) -> Generator[Tuple[str,Any],None,None]:
-        for attr in self.__annotations__.keys():
+        for attr in self.types.keys():
             yield attr, getattr(self,attr)

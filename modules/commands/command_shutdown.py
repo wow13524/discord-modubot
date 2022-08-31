@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 # pyright: reportUnusedFunction=false
 
 from discord import Interaction
@@ -12,7 +10,7 @@ if TYPE_CHECKING:
 class Module:
     name = "command_shutdown"
 
-    def __init__(self,bot: Bot):
+    def __init__(self,bot: 'Bot'):
         self.bot: Bot = bot
     
     async def postinit(self):
