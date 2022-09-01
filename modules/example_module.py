@@ -1,9 +1,10 @@
+from modubot import ModuleBase
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from modubot import Bot
 
-class Module:
+class Module(ModuleBase):
     name = "example_module"
 
     def __init__(self,bot: 'Bot'):

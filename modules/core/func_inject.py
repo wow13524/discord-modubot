@@ -1,4 +1,5 @@
 import asyncio
+from modubot import ModuleBase
 from typing import Any,Awaitable,Callable,Dict,List,TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -6,7 +7,7 @@ if TYPE_CHECKING:
 
 Callback = Callable[...,Awaitable[None]]
 
-class Module:
+class Module(ModuleBase):
     name = "func_inject"
 
     def __init__(self,bot: 'Bot'):

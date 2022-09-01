@@ -2,7 +2,10 @@ import discord
 import importlib
 import os
 from .bot_config import BotConfig
-from typing import Any,Dict,Optional
+from typing import Any,Dict,Optional,Type,TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from modubot import ModuleBase
 
 DEFAULT_CONFIG_NAME = "config.json"
 
@@ -10,7 +13,7 @@ class Bot(discord.AutoShardedClient):
     def __init__(self,work_dir: str = os.getcwd(),config_name: str=DEFAULT_CONFIG_NAME):
         self.work_dir: str = work_dir
         self.config: BotConfig = BotConfig(config_path=os.path.join(work_dir,config_name))
-        self.loaded_modules: Dict[str,Any] = self._preload_modules()
+        self.loaded_modules: Dict[str,ModuleBase] = self._preload_modules()
 
         intents: discord.Intents = discord.Intents.default()
         for intent,value in self.config.intents.items():
@@ -19,10 +22,10 @@ class Bot(discord.AutoShardedClient):
         super().__init__(intents=intents)
     
     def _preload_modules(self) -> Dict[str,Any]:
-        loaded_modules: Dict[str,Any] = {}
+        loaded_modules: Dict[str,ModuleBase] = {}
         name_path_dict: Dict[str,str] = {}
         for module_path in self.config.enabled_modules:
-            module = importlib.import_module(module_path).Module
+            module: Type[ModuleBase] = importlib.import_module(module_path).Module
             module_name: str = module.name
             if module_name in name_path_dict:
                 raise Exception(f"modules '{name_path_dict[module_name]}' and '{module_path}' share the same name '{module_name}'")

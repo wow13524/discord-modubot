@@ -2,18 +2,18 @@
 # ^ the type of typeguard.check_type ironically can't be inferred :P
 
 import json
-import os
+from os import path
 from typeguard import check_type
-from typing import Any,Dict,Generator,Tuple,get_origin,get_type_hints
+from typing import Any,Dict,Generator,Tuple,Union,get_origin,get_type_hints
 
 class Config:
-    def __init__(self,config_path: str) -> None:
-        self.exists: bool = os.path.exists(config_path)
-        self.path: str = config_path
+    def __init__(self,config_path: Union[str,'Config']) -> None:
+        self.path: str = config_path if isinstance(config_path,str) else config_path.path
+        self.exists: bool = path.exists(self.path)
         self.types: Dict[str,Any] = get_type_hints(self)
 
         if self.exists:
-            with open(config_path) as f:
+            with open(self.path) as f:
                 self._load(json.load(f))
         else:
             self._load({})
@@ -24,8 +24,8 @@ class Config:
         needs_saving: bool = False
         for attr,t in self.types.items():
             value: Any
-            if not attr in data:
-                print(f"field '{attr}' missing from config, updating")
+            if attr not in data:
+                print(f"field '{attr}' missing from config, adding")
                 value = (get_origin(t) or t)()
                 needs_saving = True
             else:
@@ -36,17 +36,14 @@ class Config:
             self.save()
     
     def save(self) -> None:
-        existing: Dict[str,Any] = {}
-        if os.path.exists(self.path):
-            with open(self.path,"r+") as f:
+        output: Dict[str,Any] = dict(self)
+        if self.exists:
+            with open(self.path) as f:
                 content: str = f.read()
-                if content:
-                    existing = json.loads(content)
+                output.update(json.loads(content))
         with open(self.path,"w+") as f:
-            output: Dict[str,Any] = dict(self)
-            output.update(existing)
             json.dump(output,f,indent=4)
     
     def __iter__(self) -> Generator[Tuple[str,Any],None,None]:
-        for attr in self.types.keys():
+        for attr in self.types:
             yield attr, getattr(self,attr)
