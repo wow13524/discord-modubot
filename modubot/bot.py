@@ -5,7 +5,7 @@ from .bot_config import BotConfig
 from typing import Any,Dict,Optional,Type,TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from modubot import ModuleBase
+    from .module_base import ModuleBase
 
 DEFAULT_CONFIG_NAME = "config.json"
 

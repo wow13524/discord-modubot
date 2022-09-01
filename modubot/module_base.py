@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from modubot import Bot
+    from .bot import Bot
 
 class ModuleBase:
     name: str
