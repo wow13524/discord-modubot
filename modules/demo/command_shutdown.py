@@ -10,13 +10,11 @@ if TYPE_CHECKING:
     from ..core.slash_commands import Module as SlashCommands
 
 class Module(ModuleBase):
-    name = "command_shutdown"
-
-    def __init__(self,bot: 'Bot'):
+    def __init__(self,bot: 'Bot') -> None:
         self.bot: Bot = bot
     
-    async def postinit(self):
-        slash_commands: SlashCommands = self.bot.get_module("slash_commands")
+    async def postinit(self) -> None:
+        slash_commands: SlashCommands = self.bot.get_module("modules.core.slash_commands")
         cmd_tree: CommandTree[Bot] = slash_commands.cmd_tree
 
         @cmd_tree.command(name="shutdown",description="Stops the bot.")
