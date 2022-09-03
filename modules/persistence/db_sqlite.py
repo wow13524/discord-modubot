@@ -16,8 +16,10 @@ class Module(ModuleBase):
     
     async def init(self) -> None:
         self.connection = await aiosqlite.connect(join(self.bot.work_dir,self.config.db_name),isolation_level=None)
+        await self.connection.execute(f"PRAGMA auto_vacuum = {self.config.auto_vacuum};")
+        await self.connection.execute("VACUUM;")
         if self.config.write_ahead_logging:
-            await self.connection.execute("PRAGMA journal_mode=WAL;")
+            await self.connection.execute("PRAGMA journal_mode = WAL;")
     
     async def postinit(self) -> None:
         func_inject: FuncInject = self.bot.get_module("modules.core.func_inject")

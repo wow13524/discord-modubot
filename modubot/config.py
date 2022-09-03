@@ -4,7 +4,7 @@
 import json
 from os import path
 from typeguard import check_type
-from typing import Any,List,Dict,Generator,Optional,Tuple,Type,TypeVar,Union,get_origin,get_type_hints
+from typing import Any,List,Dict,Generator,Literal,Optional,Tuple,Type,TypeVar,Union,get_origin,get_type_hints
 
 T = TypeVar("T",bound="PropertyDict")
 
@@ -32,6 +32,8 @@ class PropertyDict(TypedProperties):
             origin: Optional[type] = get_origin(tp)
             if origin == list or origin == dict:
                 value = value.copy()
+            elif origin == Literal:
+                pass
             elif issubclass(tp,PropertyDict):
                 value = tp(value,subpath)
             check_type(subpath,value,tp)
