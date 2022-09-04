@@ -41,8 +41,6 @@ if TYPE_CHECKING:
     from modubot import Bot
 
 class Module(ModuleBase):
-    name = "example_module"
-
     def __init__(self,bot: 'Bot') -> None:
         ...
 
@@ -106,6 +104,6 @@ from .example_config import ExampleConfig
         print(self.config.baz)  #bool
 ...
 ```
-Module config sections are appended to the config file if they don't already exist and are populated with the values defined in the module config class.
+Module config sections are appended to the config file if they don't already exist and are populated with the values defined in the module config class.  The name of the section within the config file is the same as the name of the class representing it.
 
 An example module can be found [here](https://github.com/wow13524/discord-modubot/tree/main/modules/example_module).

@@ -1,4 +1,3 @@
-from discord import Status
 from modubot import ModuleBase
 from typing import TYPE_CHECKING
 from .example_config import ExampleConfig
@@ -8,8 +7,6 @@ if TYPE_CHECKING:
     from ..core.func_inject import Module as FuncInject
 
 class Module(ModuleBase):
-    name = "example_module"
-
     def __init__(self,bot: 'Bot') -> None:
         """
         Initialize any necessary instance variables for the module.
@@ -25,7 +22,7 @@ class Module(ModuleBase):
         """
         Interface with the bot after the client has been initialized.
         """
-        await self.bot.change_presence(status=Status.idle)
+        print("Is the bot ready?",self.bot.is_ready())
     
     async def postinit(self) -> None:
         """
