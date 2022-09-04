@@ -15,11 +15,9 @@ A simple, lightweight API wrapper for [discord.py](https://github.com/Rapptz/dis
 - Fully type annotated
     - Leveraged for easy subconfig sections
 
----
-
 ## Getting Started
 
-Populate `BotConfig.token` in the provided `example_config.json` and run the following code within the same directory:
+Populate `BotConfig.token` in the provided `example_config.json` and run either `main.py` or the following code within the same directory:
 
 ```py
 from modubot import Bot
@@ -27,8 +25,6 @@ from modubot import Bot
 Bot(config_name="example_config.json").run()
 ```
 The bot should connect to Discord with the slash command `/shutdown` enabled.
-
----
 
 ## Creating Modules
 
@@ -65,8 +61,6 @@ Modules are instantiated once during bot startup and these singletons remain act
 >
 > ### `postinit` Method:
 > An `async` method intended for interfacing with other modules.
-
----
 
 ## Module Config Integration
 **The following types are currently supported for module configs:**

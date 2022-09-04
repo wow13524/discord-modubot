@@ -7,5 +7,10 @@
             "modules.example_module"
         ],
         "token": ""
+    },
+    "ExampleConfig": {
+        "foo": 10,
+        "bar": "asdf",
+        "baz": true
     }
 }
