@@ -90,12 +90,12 @@ from .example_config import ExampleConfig
 
 ... #Module class definition
     def __init__(self,bot: 'Bot') -> None:
-        self.bot: Bot = bot
-        self.config: ExampleConfig = self.bot.config.get(ExampleConfig)
+        self._bot: Bot = bot
+        self._config: ExampleConfig = self._bot.config.get(ExampleConfig)
 
-        print(self.config.foo)  #int
-        print(self.config.bar)  #str
-        print(self.config.baz)  #bool
+        print(self._config.foo)  #int
+        print(self._config.bar)  #str
+        print(self._config.baz)  #bool
 ...
 ```
 Module config sections are appended to the config file if they don't already exist and are populated with the values defined in the module config class.  The name of the section within the config file is the same as the name of the class representing it.
