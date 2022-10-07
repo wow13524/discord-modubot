@@ -6,18 +6,21 @@ A simple, lightweight API wrapper for [discord.py](https://github.com/Rapptz/dis
 
 ## Key Features
 - Modular behavior support
-    - Hook into core client events with `modules.core.func_inject`
-    - Simple embedded database implementation with `modules.persistence`
+    - Hook into core client events with [`modules.core.func_inject`](https://github.com/wow13524/discord-modubot/tree/main/modules/core)
+    - Simple embedded database implementation with [`modules.persistence`](https://github.com/wow13524/discord-modubot/tree/main/modules/persistence)
     - Modules can interact with each other using `Bot.get_module()`
 - Integrated config file
     - Control intents, enabled modules, and bot token
     - Integration with module subconfig sections
+- Multiple instance support
+    - Easily run different bots from the same script
+    - Behaviors are defined in config files
 - Fully type annotated
     - Leveraged for easy subconfig sections
 
 ## Getting Started
 
-Populate `BotConfig.token` in the provided `example_config.json` and run either `main.py` or the following code within the same directory:
+Populate `BotConfig.token` in the provided [`example_config.json`](https://github.com/wow13524/discord-modubot/tree/main/example_config.json) and run either [`main.py`](https://github.com/wow13524/discord-modubot/tree/main/main.py) or the following code within the same directory:
 
 ```py
 from modubot import Bot
@@ -25,6 +28,12 @@ from modubot import Bot
 Bot(config_name="example_config.json").run()
 ```
 The bot should connect to Discord with the slash command `/shutdown` enabled.
+
+## Running Multiple Instances
+
+Multiple bots can be started from the same script in a similar manner to discord.py's Client.  
+Different bot configurations can be passed into the Bot constructor in order to do this.  
+An example can be found at [`multi_instance.py`](https://github.com/wow13524/discord-modubot/tree/main/multi_instance.py) with configs located in [`example_configs`](https://github.com/wow13524/discord-modubot/tree/main/example_configs).
 
 ## Creating Modules
 
@@ -51,9 +60,9 @@ Modules are instantiated once during bot startup and these singletons remain act
 
 > ### `__init__` Constructor:
 > **Parameters:**
-> - **Bot** (`modubot.Bot`) - The active bot instance, useful for accessing `Bot.Config` or `Bot.get_module()`.  
+> - **Bot** (`modubot.Bot`) - The active bot instance, useful for accessing `Bot.config` or `Bot.get_module()`.  
 > 
-> Intended for accessing `bot.Config` or initializing any instance variables belonging to the module.  
+> Intended for accessing `bot.config` or initializing any instance variables belonging to the module.  
 > *Note: At this stage, `bot` has not been initialized as an `AutoSharedClient`.*
 >
 > ### `init` Method:
@@ -100,4 +109,4 @@ from .example_config import ExampleConfig
 ```
 Module config sections are appended to the config file if they don't already exist and are populated with the values defined in the module config class.  The name of the section within the config file is the same as the name of the class representing it.
 
-An example module can be found [here](https://github.com/wow13524/discord-modubot/tree/main/modules/example_module).
+An example module can be found at [`modules.example_module`](https://github.com/wow13524/discord-modubot/tree/main/modules/example_module).

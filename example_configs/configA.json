@@ -5,13 +5,13 @@
         "enabled_modules": [
             "modules.core",
             "modules.demo",
-            "modules.example_module"
+            "modules.persistence"
         ],
         "token": ""
     },
-    "ExampleConfig": {
-        "foo": 10,
-        "bar": "asdf",
-        "baz": true
+    "PersistenceConfig": {
+        "db_name": "data_store_a.db",
+        "auto_vacuum": "FULL",
+        "write_ahead_logging": true
     }
 }
