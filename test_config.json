@@ -1,0 +1,10 @@
+{
+    "BotConfig": {
+        "client_args": {},
+        "intents": {},
+        "enabled_modules": [
+            "modules.core"
+        ],
+        "token": ""
+    }
+}
