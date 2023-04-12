@@ -4,7 +4,7 @@
 import json
 from os import path
 from typeguard import check_type
-from typing import Any,List,Dict,Generator,Literal,Optional,Tuple,Type,TypeVar,Union,get_args,get_origin,get_type_hints
+from typing import Any,List,Dict,Generator,Literal,Optional,Tuple,Type,TypeVar,Union,cast,get_args,get_origin,get_type_hints
 
 T = TypeVar("T",bound="PropertyDict")
 
