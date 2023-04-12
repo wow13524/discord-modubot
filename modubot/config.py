@@ -27,10 +27,12 @@ class TypedProperties:
         self._types: Dict[str,type] = get_type_hints(self)
     
     def __iter__(self) -> Generator[Tuple[str,Any],None,None]:
-        for attr in self._types:
+        for attr,tp in self._types.items():
             value: Any = getattr(self,attr)
             if isinstance(value,TypedProperties):
                 value = dict(value)
+            elif isinstance(value,list) and issubclass(get_args(tp)[0],TypedProperties):
+                value = list(map(dict,cast(List[TypedProperties],value)))
             yield attr, value
 
 class PropertyDict(TypedProperties):
