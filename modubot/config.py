@@ -40,7 +40,7 @@ class PropertyDict(TypedProperties):
 
         for attr,tp in self._types.items():
             subpath: str = f"{path}.{attr}"
-            value: 'Any' = None if type(None) in get_args(tp) else getattr(self.__class__,attr) if attr not in data else data[attr]
+            value: Any = data[attr] if attr in data else None if type(None) in get_args(tp) else getattr(self.__class__,attr)
             value = _parse_value(value,missing_fields,tp,subpath)
             check_type(subpath,value,tp)
             setattr(self,attr,value)
