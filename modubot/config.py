@@ -4,12 +4,15 @@
 import json
 from os import path
 from typeguard import check_type
-from typing import Any,List,Dict,Generator,Literal,Optional,Tuple,Type,TypeVar,Union,cast,get_args,get_origin,get_type_hints
+from typing import Any,List,Dict,Generator,Literal,Tuple,Type,TypeVar,Union,cast,get_args,get_origin,get_type_hints
 
 T = TypeVar("T",bound="PropertyDict")
 
+def _get_raw_origin(tp: Type[Any]) -> type:
+    return get_origin(tp) or tp
+
 def _parse_value(value: Any,missing_fields: List[str],tp: type,subpath: str) -> Any:
-    origin: Optional[type] = get_origin(tp)
+    origin: type = _get_raw_origin(tp)
     if isinstance(value,PropertyDict):
         value = dict(value)
     if origin == dict:
@@ -31,7 +34,7 @@ class TypedProperties:
             value: Any = getattr(self,attr)
             if isinstance(value,TypedProperties):
                 value = dict(value)
-            elif isinstance(value,list) and issubclass(get_args(tp)[0],TypedProperties):
+            elif isinstance(value,list) and issubclass(_get_raw_origin(get_args(tp)[0]),TypedProperties):
                 value = list(map(dict,cast(List[TypedProperties],value)))
             yield attr, value
 
