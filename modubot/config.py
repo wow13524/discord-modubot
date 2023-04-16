@@ -27,7 +27,7 @@ def _parse_value(value: Any,missing_fields: List[str],tp: type,subpath: str) -> 
 
 class TypedProperties:
     def __init__(self):
-        self._types: Dict[str,type] = get_type_hints(self)
+        self._types: Dict[str,type] = get_type_hints(self.__class__)
     
     def __iter__(self) -> Generator[Tuple[str,Any],None,None]:
         for attr,tp in self._types.items():
